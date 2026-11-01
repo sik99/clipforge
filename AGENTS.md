@@ -1,13 +1,21 @@
+# Agent instructions
+
+Write all repository documentation in English, regardless of the conversation language.
+
+The owner makes consequential system design and infrastructure decisions. Agents explain options and trade-offs, then implement within the agreed boundaries. Read [collaboration rules](docs/agents/collaboration.md) before planning work or proposing architectural changes.
+
+For project goals, current scope, technology direction, and unresolved questions, read the [project brief](docs/project-brief.md). For file placement or new directories, read the [repository layout](docs/repository-layout.md).
+
 ## Agent skills
 
 ### Issue tracker
 
-Issues are tracked as local markdown files under `.scratch/`. See `docs/agents/issue-tracker.md`.
+When creating or updating issues, specs, or work maps, follow [the local issue tracker conventions](docs/agents/issue-tracker.md).
 
 ### Triage labels
 
-Use the five default triage labels. See `docs/agents/triage-labels.md`.
+When triaging issues, use [the five default triage labels](docs/agents/triage-labels.md).
 
 ### Domain docs
 
-Use the single-context layout. See `docs/agents/domain.md`.
+When exploring domain behavior or documenting terminology and decisions, follow [the single-context domain conventions](docs/agents/domain.md).
