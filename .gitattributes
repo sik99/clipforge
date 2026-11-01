@@ -1,0 +1,9 @@
+# Normalize text to LF in Git; checkout endings follow core.autocrlf/core.eol.
+* text=auto
+
+# Windows command scripts use CRLF on checkout, but remain normalized to LF in Git.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Shell scripts use LF on every platform.
+*.sh text eol=lf
