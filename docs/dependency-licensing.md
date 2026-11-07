@@ -1,0 +1,245 @@
+# Dependency licensing
+
+This is the main source of truth for ClipForge's third-party software licensing decisions, obligations, evidence, and review triggers. Other project documents link here instead of maintaining parallel licensing guidance. Upstream license texts govern; this guide records engineering actions and is not a substitute for resolving ambiguous legal cases.
+
+## Current decisions and pending evidence
+
+| Item | Status |
+| --- | --- |
+| Original ClipForge code | The owner selected MIT licensing for original ClipForge code and intends to publish the repository publicly. Verify the actual license file and copyright attribution before publication. |
+| Conversion engine | FFmpeg is selected. |
+| Job-information database | SQLite is selected for v1. Its deliverable engine code is public domain; the .NET provider, native bundle, optional ORM, and exact versions remain unselected and require their own checks. |
+| FFmpeg license target | The owner permits a redistributable GPL-enabled CLI build, replacing the initial LGPL-only target. The encoder direction is `libx264`, native `aac`, `libvpx-vp9`, and `libopus`. The exact GPL version and concrete binary remain unselected; exclude `--enable-nonfree` builds from the redistribution plan. |
+| Integration | Invoke FFmpeg as a genuinely independent CLI executable. Exact process integration remains for implementation design; review any library linking, wrapper, or copied code before adopting it. |
+| Installation and version | Deferred until environment setup; candidates are described below. No binary provider, release, build, installation method, or redistribution package is approved yet. |
+| Distribution | Use an independently installed FFmpeg for local v1. Later private/local Docker use is acceptable, with actual recipients reviewed before sharing an image. Before binary/image redistribution, supply required notices, licenses, and complete corresponding source/build material through a method permitted by the selected licenses. Registry visibility alone does not decide redistribution. Concrete installation, packaging, and release procedures remain deferred. |
+
+Keep the exact artifact record here when installation is selected: version/commit, provider and download URL, platform, checksum, reported license and build configuration, enabled external libraries, required encoders, and corresponding-source location. Pin evidence to the selected version rather than relying on changing `master` pages. At present these artifact details are pending.
+
+## GPL CLI integration, independent installation, and ClipForge's license
+
+The owner permits GPL-enabled FFmpeg and distinguishes invoking an independently installed binary from redistributing one. GPL is not a prohibition on commercial use. ClipForge's own original code can remain MIT if it is genuinely independent and invokes FFmpeg through ordinary CLI arguments, standard process I/O, and media files. This is an assessment of the proposed integration, not a guarantee for every arrangement with separate processes. The actual coupling and distributed work matter. [GPLv2, sections 0 and 2](https://opensource.org/license/gpl-2.0), [GNU FAQ on aggregation](https://www.gnu.org/licenses/gpl-faq.en.html#MereAggregation).
+
+| Arrangement | Distribution implications |
+| --- | --- |
+| Run an independently installed FFmpeg locally | ClipForge does not distribute that FFmpeg copy. Running a GPL program does not by itself require publishing ClipForge source. Its supplier handles the supplier's binary-distribution obligations. |
+| Distribute only an independent ClipForge application that locates the user's FFmpeg | No FFmpeg binary is supplied by ClipForge. Keep its integration independent; the installation source alone does not exempt a tightly combined application from GPL assessment. |
+| Supply FFmpeg inside an installer, archive, or downloadable CI artifact | Complete the selected GPL/LGPL binary-distribution requirements for FFmpeg and all included dependencies. Genuinely independent ClipForge code can remain MIT within a mixed-license aggregate. |
+| Build and run a Docker image solely on the owner's computer | Docker does not itself turn private use into redistribution. Existing license notices and artifact provenance still matter. |
+| Use a private registry only for the owner or internal copies within one organization | Generally private/internal use under the GNU FAQ. Review the real recipients and legal entities; a registry access-control setting is not a legal exemption. |
+| Supply an image to another organization or customer, including through a private registry | Treat it as redistribution and complete binary/source/notice obligations. Installing FFmpeg through a package manager during image build does not remove the FFmpeg files from the distributed image. |
+| Publish only a Dockerfile that instructs a recipient to obtain FFmpeg independently | A recipe alone does not supply FFmpeg binaries. Assess copied source, supplied artifacts, and actual distribution separately. |
+| Run a conversion service without conveying server binaries | Ordinary GPL does not add an AGPL-style source-offer duty merely because users access the service. Codec-patent and service-use terms remain a separate review. |
+
+Private hosting through an external registry/cloud provider and work by contractors need their actual roles, access, control, contracts, and selected GPL version assessed; neither "private" nor "cloud" alone settles conveying. GPLv3 has specific provisions for work performed solely on the licensee's behalf under its direction/control. [GNU FAQ on internal distribution](https://www.gnu.org/licenses/gpl-faq.en.html#InternalDistribution), [GPLv3, sections 0 and 2](https://opensource.org/license/gpl-3.0), [Docker repository access controls](https://docs.docker.com/docker-hub/repos/manage/access/).
+
+Directly linking GPL FFmpeg libraries, including through a C# wrapper, is a different case: a distributed covered combination generally needs GPL terms rather than MIT-only distribution. MIT notices and permissions on independently authored files can remain, but the covered combined artifact cannot be described as MIT-only. The wrapper's own permissive license does not determine the native library's obligations. LGPL library linking instead needs its applicable replacement/relinking and other compliance conditions, as discussed below. Ordinary converted media does not become GPL merely because GPL FFmpeg produced it; content rights continue to follow the input and any incorporated material. [GPLv2, sections 0 and 2](https://opensource.org/license/gpl-2.0), [LGPL v2.1, sections 5–6](https://opensource.org/license/lgpl-2-1), [GNU FAQ on output](https://www.gnu.org/licenses/gpl-faq.en.html#GPLOutput).
+
+The owner accepted the GPL CLI, encoder, independent-installation, MIT, and future distribution-check directions above. Select the concrete version/build and verify provenance/features during setup; perform the distribution checks before any later binary/image release. A commercial x264 copyright license is not needed merely to preserve MIT for a genuinely separate CLI caller, and buying one would not automatically license unrelated GPL components or establish codec-patent coverage. These decisions do not select a concrete artifact or establish patent clearance; the patent assessment remains open.
+
+## Public source repositories, build recipes, and private images
+
+Publishing original ClipForge source, Dockerfiles, and Compose files distributes those files; it does not by itself distribute FFmpeg. Original build instructions can obtain FFmpeg from an independent supplier during a recipient's local build. The supplier then provides that FFmpeg copy, and the recipient can build and run privately without ClipForge supplying a prebuilt image. There is no need to prevent repository cloners from running the project. A Dockerfile is a recipe, whereas an image contains the resulting filesystem layers. [Dockerfile documentation](https://docs.docker.com/build/concepts/dockerfile/).
+
+This is an ordinary permitted way to use an independently supplied GPL program, not a special exemption from GPL compliance. It assumes the recipe and ClipForge code are independently authored or otherwise properly licensed, the download source is authorized to supply its copies, and ClipForge does not also supply covered code or artifacts through another channel. It does not establish patent clearance. Redistributing FFmpeg is also permitted when its applicable distribution conditions are fulfilled. [GPLv2, sections 0–3](https://opensource.org/license/gpl-2.0).
+
+Copying FFmpeg source into the repository is source distribution and requires its applicable licenses and notices, even without binaries. Supplying FFmpeg binaries through the repository, releases, downloadable CI artifacts, images, or shared build caches triggers the corresponding binary-distribution checks. Merely referring to an upstream dependency is different from supplying its files. Assess all included third-party code, not only FFmpeg. [GPLv2, sections 1–3](https://opensource.org/license/gpl-2.0).
+
+A public GitHub repository can coexist with a private container image. GitHub Container Registry supports package visibility and access independent of repository visibility. Linked packages can inherit repository access permissions, so remove inheritance and configure recipients explicitly when independent private access is intended. Private delivery to external recipients still requires the applicable distribution obligations. Image hosting and publication procedures remain unselected. [GitHub package access and visibility](https://docs.github.com/en/packages/learn-github-packages/configuring-a-packages-access-control-and-visibility), [Container Registry permissions](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry).
+
+## SQLite selection and pending integration evidence
+
+The owner selected SQLite as the v1 job-information database. The upstream [copyright statement](https://www.sqlite.org/copyright.html) dedicates SQLite's deliverable engine code and documentation to the public domain. This statement does not establish the terms of a future .NET provider, native package bundle, optional ORM, or other dependencies.
+
+This decision records the engine choice only. No package installation, wrapper or provider integration, copied source, or distribution is performed by this documentation change. At provider selection and setup, record the exact managed and native artifacts, versions, provenance, license evidence, and transitive dependencies under the checkpoints below. Before redistribution, apply the artifact-specific distribution checks. The current checkpoint is engine selection; installation, integration, and distribution evidence remains pending until those actions are concrete.
+
+## Choosing an FFmpeg build
+
+License-affecting flags apply when compiling FFmpeg, not when converting a file. LGPL builds omit some optional functionality: libx264 and libx265, for example, require GPL-enabled builds. If a feature is missing, evaluate a suitably licensed FFmpeg build before replacing the engine. Explain the licensing and packaging implications and obtain the owner's decision before changing the approved variant. Version-3 dependencies may require another variant. FFmpeg identifies `--enable-nonfree` builds as unredistributable; exclude them from distributable ClipForge artifacts. See the [upstream license description](https://github.com/FFmpeg/FFmpeg/blob/master/LICENSE.md).
+
+The output container, codec standard, and encoder implementation are separate choices. MP4 output with H.264 video does not inherently require a GPL build; the selected encoder and its integration determine the applicable software licensing. The selected libx264 direction requires enabling GPL. The [output profiles](project-brief.md#first-version-user-flow-and-scope) define the media combinations; the encoder and license decisions above separately constrain artifact selection.
+
+**A recent or officially released version does not by itself establish the binary's redistributability or LGPL variant.** FFmpeg's [download page](https://ffmpeg.org/download.html) supplies source and links to third-party compiled packages. Inspect the actual artifact, dependencies, and available matching source. A redistributable artifact still has license obligations when supplied to others.
+
+## Encoder candidates for the selected output profiles
+
+[FFmpeg's encoder documentation](https://raw.githubusercontent.com/FFmpeg/FFmpeg/master/doc/encoders.texi) documents native AAC and wrappers for OpenH264, libvpx, libopus, libaom, and SVT-AV1. External-library support depends on build configuration. The selected v1 encoder direction is libx264, native aac, libvpx-vp9, and libopus; OpenH264 is an alternative considered, and AV1 remains beyond v1. The table records upstream source-license evidence, not approval of particular versions or binaries:
+
+| Codec | Encoder candidate | Software-license implication |
+| --- | --- | --- |
+| H.264/AVC | `libx264` | GPL licensing makes the combined FFmpeg executable GPL. Selected direction for independent CLI use; it does not automatically impose GPL on an independent MIT caller. |
+| H.264/AVC | `libopenh264` | [OpenH264 source](https://github.com/cisco/openh264/blob/master/LICENSE) is BSD 2-Clause and can fit an LGPL build. Profile support, quality/performance, packaging, and patent-related terms need artifact-specific assessment; permissive source licensing is not a patent exemption. |
+| AAC-LC | FFmpeg's native `aac` | Native implementation under FFmpeg's applicable licensing; no external FDK AAC library is required for this profile. |
+| VP9 | `libvpx-vp9` | [libvpx](https://github.com/webmproject/libvpx/blob/main/LICENSE) has a BSD-style license compatible with either an LGPL or GPL FFmpeg build, subject to the whole build. |
+| Opus | `libopus` | [libopus](https://github.com/xiph/opus/blob/main/COPYING) has a BSD-style license compatible with either an LGPL or GPL FFmpeg build, subject to the whole build. |
+| AV1, beyond v1 | `libaom-av1`, or another reviewed AV1 encoder | [libaom](https://aomedia.googlesource.com/aom/+/refs/heads/main/LICENSE) has a BSD-style source license. AV1 does not inherently require enabling GPL; library/version/build selection remains future work. |
+
+Software copyright licensing and codec-patent terms are separate. [Cisco's OpenH264 FAQ](https://www.openh264.org/faq.html) distinguishes its BSD source license from the conditional AVC patent-pool coverage for Cisco-distributed binaries; that coverage must not be assumed for arbitrary self-built or redistributed copies. Resolve the actual artifact, use, and packaging under the checkpoints below. No patent-fee obligation or exemption is established for ClipForge by this candidate comparison.
+
+## Codec-patent comparison and limits of this assessment
+
+Changing GPL to LGPL, or changing the encoder implementation for the same codec, does not by itself remove codec-patent questions. Relevant rights depend on enforceable patent claims in the applicable territories, actual implementation/use, applicable licenses or exceptions, and what is supplied to whom. Personal, noncommercial, open-source, or small-volume use must not be treated as a universal exemption. An upstream license or a pool's marketing statement alone does not establish patent validity, infringement, or freedom to operate. [FFmpeg patent discussion](https://github.com/FFmpeg/web/blob/master/src/legal).
+
+| Codec/implementation | Patent position to consider |
+| --- | --- |
+| H.264 with x264 or source-built OpenH264 | [Via LA's AVC program](https://www.via-la.com/licensing-programs/avc-h-264/) covers encoder/decoder and other product/service uses under its terms. Neither GPL nor BSD supplies general clearance for all AVC patent claims. An encoder copyright license, including a commercial x264 license, is distinct from the applicable patent rights. |
+| Cisco-provided OpenH264 binary | [Cisco's binary terms](https://www.openh264.org/BINARY_LICENSE.txt) provide conditional coverage under its AVC pool license. Conditions include separate download to the end user's device, user control of use, attribution, and reproduction of the licensing text. The notice limits covered uses and explicitly identifies possible separate content-provider/broadcaster licensing. Self-built copies and arbitrary bundling must not be assumed covered. |
+| AAC-LC with native FFmpeg AAC | Avoids an extra encoder-library dependency, but not the codec-patent question. [Via LA's AAC program](https://www.via-la.com/aac/) markets licenses for essential AAC patent rights. Exact AAC-LC claims, territories, existing coverage, and use need assessment; the entire AAC family must not be treated as one uniform expiration status. |
+| VP9 with libvpx | Google's [WebM patent grant](https://www.webmproject.org/license/additional/) is royalty-free within its scope, with conditions including defensive termination. Other parties market VP9 patent rights, including [Sisvel](https://www.sisvel.com/licensing-programmes/audio-and-video-coding-decoding/) and [Access Advance](https://accessadvance.com/2025/01/16/access-advance-announces-video-distribution-patent-pool-in-response-to-market-demand/). Their claims do not establish that ClipForge owes fees; Google's grant is not a blanket warranty against all third-party claims. |
+| Opus with libopus | The project provides [BSD copyright and contributor royalty-free patent grants](https://opus-codec.org/license/). [Vectis's Opus pool](https://www.opuspool.com/home) also markets rights for end-user hardware devices. The latter's stated hardware scope must not be automatically applied to this software converter, nor may upstream grants be treated as universal third-party clearance. |
+| AV1, beyond v1 | [AOMedia's patent license](https://aomedia.org/license/patent-license/) grants royalty-free rights from participating licensors subject to conditions. Sisvel and Access Advance also market claimed AV1 patent rights. Review the actual implementation/use when AV1 becomes concrete; a permissive encoder copyright license alone does not resolve it. |
+
+Input decoding can matter as well as output encoding: WebM output does not remove AVC/AAC questions when the source is decoded from those formats. Zero-royalty tiers or an existing operating-system/driver license are not, without reviewing their scope, proof of all necessary coverage or absence of paperwork. Hardware encoders add vendor-specific implementation/distribution terms and need the same scope check; the presence of licensed hardware is not a blanket application/service patent exemption.
+
+The practical recommendation is to keep the selected interoperable v1 profiles, avoid treating GPL as the patent problem, and assess the actual local-use circumstances and provider terms at artifact selection. Before a public/commercial service or binary/image distribution, obtain a use- and jurisdiction-specific assessment of relevant patent coverage and any compatible arrangements needed. GPLv2 section 7 also requires satisfying GPL conditions together with other applicable obligations; a conflicting patent restriction cannot simply override the GPL. This guide does not establish either that fees are due for local v1 or that local use has universal patent clearance.
+
+## Czech local use, travel, and future hosted trials
+
+The owner plans private local execution in the Czech Republic for v1. A possible later, short-lived, publicly accessible hosted service is an optional learning idea, not a change to the local-only v1 boundary; its hosting country and provider remain unselected. Public hosting is not important for v1; defer deeper service-specific analysis until the owner wants that trial. The owner is willing to omit public hosting and keep this project local and private if the additional obligations make that trial unsuitable.
+
+### Local noncommercial use in the Czech Republic
+
+Czech Act No. 527/1990 Coll., section 18(d), excludes acts done for noncommercial purposes from patent infringement. Section 18(e) separately addresses experiments with the subject matter of the invention. The Czech wording of (d) does not explicitly require both privacy and noncommercial purpose. For the described personal, local, noncommercial learning use, (d) provides a substantive basis for an exemption; this is a bounded application of the statute, not a conclusion that every codec is unpatented or every later use is exempt. Learning backend architecture does not automatically establish that an activity is experimentation with a particular patented codec invention under (e). Employer work, commercial development, or service operation needs its actual purpose assessed. [Current consolidated Czech text in e-Sbirka](https://e-sbirka.gov.cz/sb/1990/527?odkazId=24503461), [Czech Industrial Property Office consolidated statute, section 18](https://upv.gov.cz/files/uploads/PDF_Dokumenty/pravni_predpisy/narodni/527_1990-022022.pdf).
+
+The IPO-hosted enforcement methodology illustrates noncommercial use with natural persons meeting their own personal needs, while warning that formal business status alone is not decisive. It is explanatory material published in 2007, not a substitute for the current statute or a binding ruling on this application. Older English translations in WIPO Lex can omit later amendments; use the current Czech wording for conclusions. [IPO enforcement methodology, page 183](https://upv.gov.cz/files/uploads/PDF_Dokumenty/prosazovani-prav/Metodika04.pdf), [WIPO Lex consolidated-version metadata](https://www.wipo.int/wipolex/en/legislation/details/22327).
+
+European software patentability exclusions do not establish codec-patent clearance. The EPO explicitly identifies video compression as a possible further technical effect. European patents effective in the Czech Republic can have the same effects as national patents; territorial coverage and current legal status of an individual right must be checked. [EPO technical-effect examples](https://www.epo.org/en/legal/guidelines-epc/2026/g_ii_3_6_1.html), [IPO guidance on European patents effective in the Czech Republic](https://upv.gov.cz/prumyslova-prava/vynalezy-patenty/evropske-patenty-s-ucinky-pro-cr).
+
+### Travel and foreign hosting
+
+Patent rights and exceptions are territorial. Carrying a laptop with installed software, executing conversion on that laptop abroad, and remotely operating a server that remains in the Czech Republic are distinct circumstances. Do not assume that the Czech noncommercial-use exception applies abroad or that crossing a border automatically requires a new codec license. Before actually running conversions in another country, assess that destination's applicable rights, exceptions, and any existing license coverage. The Czech statute's temporary-entry exceptions for ships, aircraft, and vehicles are specific provisions, not evidence of a blanket worldwide traveler-laptop exemption. [WIPO patent territoriality FAQ](https://www.wipo.int/en/web/patents/faq_patents), [Czech statute, section 18(a)-(b)](https://upv.gov.cz/files/uploads/PDF_Dokumenty/pravni_predpisy/narodni/527_1990-022022.pdf).
+
+For a hosted trial, identify the actual country of each server/data center, the operator and activity, and intended users/markets before choosing a region. National exceptions and enforceable patent coverage can differ even within Europe; the provider's headquarters or the developer's residence alone does not settle the relevant jurisdiction. Do not assume that a free or brief public service inherits the private local-use assessment. Review the selected codecs and provider/service terms for that deployment; confirm whether any existing coverage extends to this operator and service. This is a review trigger, not a finding that any particular country is safe, a fee is due, or a worldwide patent search is required for current local v1. [WIPO territorial scope](https://www.wipo.int/en/web/patents/protection), [EPO Unitary Patent territorial scope](https://www.epo.org/en/legal/guidelines-up/2026/section_1_5_1).
+
+## Installation options and distribution
+
+Installation candidates are manual, independent installation of the selected build on the host OS, and later installation through a native package manager inside a possible Linux Docker deployment. The OS/container distribution, package source, exact build, and timing remain open. Verify that any package meets the selected encoder and redistributable GPL-build direction; a package-manager name or release number does not establish its enabled components.
+
+Using either installation route solely for private execution does not itself mean ClipForge supplies FFmpeg to someone else. Sharing a built image containing the installed package does: package-installed files become part of its filesystem layers, so apply the distribution checks to those contents. A Dockerfile that only instructs recipients to obtain packages is different from supplying the resulting image; assess what is actually shared. Package-manager installation is not a redistribution exemption. [Docker image layers](https://docs.docker.com/get-started/docker-concepts/building-images/understanding-image-layers/), [LGPL v2.1, section 4](https://github.com/FFmpeg/FFmpeg/blob/master/COPYING.LGPLv2.1).
+
+Resolve exact package selection and compliance materials when these deployment or distribution options become concrete.
+
+## Dependency use and deployment instructions by phase
+
+These are the licensing procedures to apply when each phase is implemented, not executable installation instructions for artifacts that have not been selected. No dependency has been installed or release approved by this guide. Keep the selected artifact evidence here or link to its actual setup/release record; replace upstream branch links with version-specific evidence when selecting artifacts.
+
+### Component coverage
+
+| Component | Direction and required handling |
+| --- | --- |
+| .NET and ASP.NET Core | The upstream runtime and ASP.NET Core code are MIT-licensed. Select the actual supported SDK/runtime and packages at setup, retain their licenses and third-party notices when supplying copies, and inventory native/transitive components. A self-contained publication or runtime-containing image supplies more components than a framework-dependent application whose runtime is obtained separately. The top-level MIT license is not a license inventory for the complete runtime/image. [Runtime license](https://github.com/dotnet/runtime/blob/main/LICENSE.TXT), [ASP.NET Core license](https://github.com/dotnet/aspnetcore/blob/main/LICENSE.txt), [runtime third-party notices](https://github.com/dotnet/runtime/blob/main/THIRD-PARTY-NOTICES.TXT). |
+| FFmpeg and encoders | Install independently for local v1. Verify the actual build contains `libx264`, native `aac`, `libvpx-vp9`, and `libopus`; record its GPL variant and complete enabled-component inventory. Preserve its original license materials. For redistribution, apply the detailed FFmpeg provisions below to the executable, included libraries, and matching source/build material. The selected encoders do not describe every component compiled into an arbitrary build. |
+| SQLite integration | SQLite's deliverable engine is public domain. Select and separately assess the .NET provider, native bundle, optional ORM, and their transitive packages. Do not infer their licenses from SQLite's public-domain status. [SQLite statement](https://www.sqlite.org/copyright.html). |
+| TypeScript and client build tools | TypeScript is Apache-2.0-licensed. Distinguish tools used only to build from code or runtime helpers copied into the shipped client. For supplied Apache-covered material, preserve the license and applicable notices, include relevant upstream NOTICE material if present, and identify modifications as required. Package manager, JavaScript runtime, bundler, and plugins remain unselected; assess each selected artifact separately. [TypeScript license, section 4](https://github.com/microsoft/TypeScript/blob/main/LICENSE.txt). |
+| React or Vue | Both current upstream projects are MIT-licensed; neither has been selected. Retain the selected framework's required copyright and license notices with distributed browser bundles. Check additional UI packages separately. [React license](https://github.com/facebook/react/blob/main/LICENSE), [Vue license](https://github.com/vuejs/core/blob/main/LICENSE). |
+| OpenAPI and client generation | Generators remain unselected. Review the generator executable/package, templates, copied runtime helpers, and generated output separately. A tool's own license does not automatically define every generated file's license. Preserve applicable generated-file notices and assess whether the generated client adds runtime dependencies. |
+| Docker tooling, images, and OS packages | Docker Desktop has separate subscription terms; the documented personal-use category is free, subject to the agreement. Recheck eligibility if the context changes. Docker Engine/Moby and Compose are distinct artifacts with their own licenses; a base image contains still more software. Inventory the exact chosen tools and image contents rather than treating everything as covered by a single Docker license. [Desktop terms](https://docs.docker.com/subscription-billing/desktop-license/), [Moby license](https://github.com/moby/moby/blob/master/LICENSE). |
+| Other development, test, CI, and hosting components | Providers and packages remain unselected. Apply the same checks to testing tools, GitHub Actions, assets, sample media, runtime dependencies, OS packages, and hosted-service terms. A development-only package normally is not shipped merely because it appears in a dependency manifest, but copied output, bundled helpers, artifacts, or an SDK-containing image can change that. |
+
+### Local v1 on the owner's computer
+
+1. Select the runtime, SQLite integration, client framework/tooling, generators, and exact artifacts within the owner-approved boundaries. Record version, provenance, license, transitive/native dependencies, use at build/runtime, and whether any files will be supplied to others.
+2. Obtain FFmpeg from the selected authorized provider, independently of the ClipForge application package. Retain its supplied notices and record provider URL, version, checksum, source availability, and build configuration. Inspect `ffmpeg -version`, `ffmpeg -buildconf`, `ffmpeg -L`, `ffmpeg -encoders`, and `ffmpeg -muxers`; these outputs support feature checks but do not replace the full component/license inventory.
+3. Configure ClipForge to locate that independent executable through the implementation's eventual configuration mechanism. Keep the ordinary CLI boundary; assess any proposed native linking, wrapper, or copied code before introducing it.
+4. Keep dependency license files intact and use personal or properly licensed test media. Local private use does not require publishing FFmpeg source merely because the GPL executable runs. Apply the Czech noncommercial-use assessment above to the actual activity, and revisit it if the purpose or execution country changes.
+5. Record the actual setup evidence and sample-conversion checks once implementation is authorized. Do not describe an unselected build as installed, verified, or patent-cleared.
+
+### Public GitHub source and build instructions
+
+1. Before publication, add and verify the MIT license/copyright for original ClipForge material. Retain third-party licenses separately for any incorporated code or assets; a root MIT file does not relicense those components.
+2. Publish source, dependency manifests/lockfiles, and original installation/build instructions. Explain that local v1 requires independently installed FFmpeg and document its verified requirements. Do not commit installed dependency trees, FFmpeg binaries, copied dependency source, or prebuilt image archives without applying their respective distribution checks.
+3. When Docker is introduced, a public recipe may download FFmpeg from an authorized upstream/package supplier during the cloner's local build. Document how to build locally. A Compose `build` recipe can support this without making an image available from ClipForge; a reference to an independently supplied image also differs from ClipForge supplying a repackaged image. Verify actual image ownership and contents rather than relying on YAML field names.
+4. Review CI outputs before upload: GitHub Releases, downloadable workflow artifacts, browser build bundles, container pushes, and externally accessible build caches can supply third-party copies. Authentication or an artifact's short retention is not a distribution exemption. Building/testing without offering the resulting copies to recipients is a different action. [GitHub artifact access](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/download-workflow-artifacts).
+5. For a private GHCR image beside the public repository, configure package visibility and access independently, remove unwanted repository-permission inheritance, and verify the actual allowed recipients before the first push/pull arrangement. Record the registry/provider role as well as access settings. Do not assume a public repository forces a public image or that a private image removes external-recipient obligations.
+
+### Future Docker: local build or image redistribution
+
+1. Select the tooling and check its usage terms. Record the base-image version/digest, OS release, installed package versions, application publication mode, and exact FFmpeg build. A digest identifies contents; it does not establish licensing compliance.
+2. For a solely local image, retain notices and the build/component record. A package manager can install FFmpeg during the local build; this alone does not mean ClipForge has supplied that image to someone else.
+3. Before sharing any built image or transferable cache containing third-party files, inventory all supplied layers, including the base OS, .NET runtime, FFmpeg dependencies, and anything retained from build stages. A multi-stage build can omit builder files from the final image, but those files still matter if builder images or caches are separately shared.
+4. Prepare required licenses/notices and complete corresponding source for applicable GPL/LGPL components, matched to the supplied binaries. Include necessary component sources, patches, and compilation/installation scripts under the selected license's scope. For the proposed online source-delivery method, provide equivalent access alongside the binary/image download and identify which source package matches each image version/digest. Verify this meets the exact GPL/LGPL variants; a Dockerfile that merely installs a binary package or a generic upstream URL is not the corresponding source.
+5. Preserve recipients' component-license rights, including applicable rights to copy, modify, and redistribute GPL material. Private-registry authentication does not permit imposing conflicting confidentiality or no-redistribution restrictions on covered material. Original independent ClipForge code can remain MIT; describe the image as containing components under multiple licenses.
+6. Verify access to notices and matching source from a recipient's perspective, record the delivery method and any continuing availability/offer obligations, then share the image. If required source or rights cannot be supplied, keep the image local or publish build instructions instead. That fallback addresses copy distribution, not unresolved patent or other rights.
+
+### Optional future hosted trial
+
+1. Decide the actual execution region/country, provider, operator, intended users, and whether the trial is private or public. Review the territorial patent guidance above before deployment. Choosing a Czech region reduces a change in execution territory but does not automatically extend a personal noncommercial-use assessment to a public service. No country or provider is selected here.
+2. Distinguish installing independently on the server from transferring a prepared image to the provider. Assess provider/contractor roles, selected GPL version, and any supplied copies; apply image-distribution procedures where applicable rather than assuming every cloud arrangement is identical.
+3. Ordinary GPL FFmpeg does not require supplying its source to service users solely because they submit videos remotely. Reassess this for any future AGPL dependency, direct software delivery, or other integration changes.
+4. Treat JavaScript, framework code, fonts, and other client assets sent to browsers as distributed copies and include their required license/notice materials. Private server code does not make downloaded frontend libraries private.
+5. Document applicable provider terms and patent coverage/exceptions for the concrete service. Free access and a short trial do not by themselves resolve these questions. If the additional obligations make the trial unsuitable, omit public hosting and retain the local/private project as the owner permits.
+
+## FFmpeg obligations by use
+
+### Local use
+
+Ordinary private execution does not require publishing ClipForge or FFmpeg source. Preserve the artifact's notices and establish its provenance at installation so later packaging can be evaluated. Private execution does not approve a future distribution method. See [LGPL v2.1, section 0](https://github.com/FFmpeg/FFmpeg/blob/master/COPYING.LGPLv2.1).
+
+### Supplying an FFmpeg executable to others
+
+If supplying an LGPL variant, prepare the following before distributing any artifact containing FFmpeg:
+
+- Include its applicable license texts, copyright notices, and third-party acknowledgments. Clearly identify which components have which licenses; ClipForge's MIT designation applies to its original code.
+- Supply complete corresponding source matching the shipped executable, including applicable linked-component sources, modifications, and compilation/installation material. With an online binary download, equivalent source access from the same place is a permitted LGPL v2.1 route. A generic upstream homepage or unrelated latest source does not establish a match.
+- Preserve recipients' rights under the component licenses in installer terms and other accompanying material.
+- For modified covered code, retain its applicable license and identify changes and dates as required. Include those changes in the matching source.
+
+See [LGPL v2.1, sections 1, 2, and 4](https://github.com/FFmpeg/FFmpeg/blob/master/COPYING.LGPLv2.1). Confirm all included dependencies' terms, not just FFmpeg's top-level license.
+
+### If a GPL FFmpeg executable is later redistributed
+
+Apply the same artifact inventory and notice discipline, then satisfy the selected GPL's binary-distribution provisions. For an online downloadable artifact, the proposed simplest procedure is to provide complete corresponding source through the same download location, including the matching FFmpeg and linked-library source, relevant modifications, and build/configuration scripts. Preserve GPL notices and recipients' rights; do not label the entire mixed-license package MIT-only. Written offers and third-party hosting have license/version-specific conditions and must not be assumed interchangeable with this procedure. [GPLv2, sections 1–3 and 6–7](https://opensource.org/license/gpl-2.0), [GPLv3, sections 4–6](https://opensource.org/license/gpl-3.0).
+
+Both LGPL and GPL executable redistribution can require corresponding source even when the binaries are unmodified. Keeping FFmpeg outside the ClipForge package avoids that FFmpeg-copy distribution step; if we later distribute the copies ourselves, the obligation returns. GPL normally requires source access for recipients through an allowed method, not a public announcement or publication of unrelated application code. Private-registry delivery to external recipients is still delivery; satisfy their rights before sharing.
+
+### Linking or incorporating code
+
+An independent executable invoked through normal CLI arguments and media files generally permits ClipForge to retain MIT. Bundling genuinely independent programs in one installer can be an aggregate; common packaging alone does not extend GPL to the other programs. Independence depends on actual coupling, not merely separate filenames or processes. [GNU FAQ](https://www.gnu.org/licenses/gpl-faq.en.html#MereAggregation), [GPLv3, section 5](https://opensource.org/license/gpl-3.0).
+
+Linking LGPL libraries requires a separate section-6 compliance assessment, including notices, permitted modification/debugging, and the recipient's ability to use modified libraries through the applicable replacement or relinking mechanism. Static versus dynamic linking affects that assessment. FFmpeg's website checklist specifically addresses library linking, not every CLI integration. [LGPL v2.1, sections 5–6](https://github.com/FFmpeg/FFmpeg/blob/master/COPYING.LGPLv2.1), [FFmpeg legal guidance](https://ffmpeg.org/legal.html).
+
+Distributing a fork or combined application incorporating GPL code generally requires GPL terms for the covered whole. An unrelated MIT application is not automatically covered. Review exact licenses, exceptions, communication, and distribution before changing integration. [GPLv2, section 2](https://opensource.org/license/gpl-2.0).
+
+## Checkpoints for every licensed dependency
+
+Read this guide when any row becomes relevant. Apply obligations to the actual action, even during unpublished v1 development; distributing a CI artifact can precede a formal release.
+
+| Trigger | Required action before proceeding |
+| --- | --- |
+| First installation; dependency or build upgrade | Record the exact artifact and license evidence. Recheck changed components and confirm the approved license target and required features. |
+| Wrapper, plugin, linking, copied code, or fork | Inspect transitive/native dependencies and how code is combined. Document the applicable obligations and resolve changes to owner-approved licensing boundaries. |
+| Sharing or committing third-party source | Preserve its license and notices; assess modifications and the resulting combined work. A dependency reference alone differs from vendored code. |
+| First or changed distribution of binaries | Complete the distribution checks below before sharing repository binaries, downloadable CI artifacts, archives, containers, installers, or customer deployments containing copies. |
+| Publishing a service without transferring copies | Check the actual licenses. Ordinary GPL distinguishes network interaction from conveying copies; modified AGPL-covered network software has a source-offer requirement. Reassess if an artifact is also distributed. |
+| Public/commercial product or new codecs | Reassess intended use and any relevant codec-patent, trademark, or other third-party terms separately from copyright licensing. Resolve applicable obligations for the actual scope. |
+
+The network distinction is described in [GPLv3, section 0](https://opensource.org/license/gpl-3.0) and [AGPLv3, section 13](https://opensource.org/license/agpl-3-0). FFmpeg's legal page separately discusses patents; an LGPL/GPL choice alone does not settle that question.
+
+For each triggered checkpoint, document evidence and completed actions here, or link from here to the actual installation/release record when one exists. State which obligations apply, which do not apply and why, and what remains unresolved. Routine checks within approved boundaries can proceed; escalate consequential changes under the [collaboration rules](agents/collaboration.md). Resolve missing license or source coverage before distributing the affected artifact. This is a documentation workflow today, not an implemented automated compliance check.
+
+## Distribution completion checks
+
+Before an artifact is shared, the responsible agent or maintainer verifies:
+
+1. Every included direct, transitive, native, and runtime component is accounted for, with the exact version/build and its license identified.
+2. The actual integration and artifact are compatible with the recorded license decisions; required owner decisions are settled.
+3. Required notices, licenses, attribution, and modification notices are present in the artifact and relevant download documentation. ClipForge's MIT license does not claim third-party code.
+4. Matching source and build material are included or accessible through a delivery method allowed by each applicable license. Verify the delivered archive/download, including correspondence to the shipped binaries. Recheck source availability when changing or retiring downloads.
+5. Packaging terms preserve component-license rights; extra linking or network-source obligations are fulfilled when applicable.
+6. The release record links to this guide and records the shipped component inventory, compliance materials and source locations, checks performed, and any continuing source-delivery commitments. Release completion requires no unresolved applicable obligation.
+
+Create real notices, source bundles, release records, and tooling when the corresponding work is authorized; keep useful evidence linked here. Review the concrete artifact, not only its design or an upstream provider's label.
+
+## Primary sources
+
+Recheck against the selected release and build at installation and each relevant change.
+
+- [FFmpeg official website](https://ffmpeg.org/).
+- [SQLite copyright and public-domain statement](https://www.sqlite.org/copyright.html), reviewed for the v1 engine selection; exact provider and package evidence remains pending.
+- [FFmpeg license and legal considerations](https://ffmpeg.org/legal.html), including its library-linking checklist and patent discussion; also available in the [official website source](https://github.com/FFmpeg/web/blob/master/src/legal).
+- [FFmpeg GitHub repository](https://github.com/FFmpeg/FFmpeg) and [LICENSE.md](https://github.com/FFmpeg/FFmpeg/blob/master/LICENSE.md), describing build-dependent licensing and external libraries.
+- [FFmpeg's LGPL v2.1 text](https://github.com/FFmpeg/FFmpeg/blob/master/COPYING.LGPLv2.1).
+- [FFmpeg downloads](https://ffmpeg.org/download.html) and [official website source](https://github.com/FFmpeg/web/blob/master/src/download), describing source releases and third-party binary-provider links.
+- [Docker image layers](https://docs.docker.com/get-started/docker-concepts/building-images/understanding-image-layers/), explaining how installed software becomes part of an image.
+- [GNU GPL FAQ: aggregation and program boundaries](https://www.gnu.org/licenses/gpl-faq.en.html#MereAggregation).
+- [GPLv2](https://opensource.org/license/gpl-2.0), [GPLv3](https://opensource.org/license/gpl-3.0), and [AGPLv3](https://opensource.org/license/agpl-3-0), as published by the Open Source Initiative.

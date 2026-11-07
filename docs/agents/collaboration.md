@@ -24,11 +24,14 @@ As the owner supplies context, update the relevant source of truth in the same s
 - Brief human-facing architecture summaries for released versions: [WHATSNEW.md](../../WHATSNEW.md).
 - Collaboration rules: this file; keep universally necessary instructions in [AGENTS.md](../../AGENTS.md).
 - Directory responsibilities: [repository layout](../repository-layout.md).
+- Third-party software licensing decisions, obligations, evidence, and checkpoints: [dependency licensing guide](../dependency-licensing.md).
 - Resolved domain terms: root `GLOSSARY.md`, created lazily following [domain conventions](domain.md).
 - Feature specifications and actionable work: local files following [issue tracker conventions](issue-tracker.md), with [triage labels](triage-labels.md) when applicable.
 - Significant architectural decisions: `docs/adr/`, following the domain-modeling skill when a real trade-off produces an owner decision that is costly to reverse and needs its rationale preserved.
 
 Capture durable meaning rather than a transcript. Explicitly distinguish confirmed owner decisions, tentative owner preferences, agent proposals, and open questions. When information changes, revise its authoritative location and remove obsolete statements. Link to that location where another document needs the context. Exploratory notes are not ADRs or ready implementation tickets.
+
+Write documentation so it stands on its own outside the AI conversation. Omit document-generation, update, and source-review timestamps and temporary chat question or decision codes. Refer to questions and decisions by descriptive topic or a stable repository link. Retain dates and identifiers when they are part of the documented subject or required evidence, such as release dates, experiment measurements, license notices, and repository issue or ADR references.
 
 ## Progressive disclosure and workflow
 
@@ -39,3 +42,5 @@ Use the repository's existing Matt Pocock skill conventions for local specs, per
 Create documents and directories when they contain useful information. Record concise validation evidence with completed work. Add an operational guide or experiment record when there is an actual procedure or result to preserve.
 
 When planning or reviewing a system version or stage, consult the [benchmark and architecture learning ideas](../learning-experiments.md) and bring up the relevant options for the owner's selection. Apply the exercises they choose and keep deferred ideas as candidates. If they choose to predict a bottleneck without AI assistance, let them state and record their hypothesis before offering recommendations. When a version is released, add a very brief description of its delivered architecture to [WHATSNEW.md](../../WHATSNEW.md).
+
+At version or stage planning and review, also consult the [licensing checkpoints](../dependency-licensing.md#checkpoints-for-every-licensed-dependency). Carry applicable actions into the relevant specs and release work, and link completion evidence from the guide. Evaluate triggers before the action that introduces an obligation, including distributions made before a formal release.
