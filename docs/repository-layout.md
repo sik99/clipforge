@@ -12,6 +12,7 @@ Create directories only when adding meaningful files. The layout describes respo
 | [CLAUDE.md](../CLAUDE.md) | Direct Claude Code to the shared agent instructions. |
 | [docs/project-brief.md](project-brief.md) | Goals, active scope, decision status, and unresolved questions. |
 | [docs/design-notes.md](design-notes.md) | Technical rationale and candidate evolution triggers. |
+| [docs/dependency-licensing.md](dependency-licensing.md) | Main source of truth for third-party software licensing decisions, obligations, source links, and setup/integration/distribution checkpoints. |
 | [docs/learning-experiments.md](learning-experiments.md) | Optional benchmark, failure, debugging, and architectural intuition exercises to select during stage planning or review. |
 | [docs/agents/](agents/) | Collaboration, local issue tracker, triage, and domain documentation conventions. |
 

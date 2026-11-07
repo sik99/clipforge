@@ -9,3 +9,5 @@ The intended server platform is ASP.NET Core. The system will evolve through pro
 Start with the [project brief](docs/project-brief.md) for scope, preferences, and open decisions. See the [repository layout](docs/repository-layout.md) for document placement and [AGENTS.md](AGENTS.md) for agent guidance.
 
 [What's new](WHATSNEW.md) provides a brief architecture history by released version.
+
+The [dependency licensing guide](docs/dependency-licensing.md) records third-party software obligations and the checks needed at setup, integration, and distribution.
