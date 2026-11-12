@@ -8,7 +8,7 @@ ClipForge converts uploaded source videos into output videos according to user-s
 A unit of requested work covering upload of a source video and its conversion.
 
 **Abandoned job**:
-A job that ended because no complete source video was uploaded within the allowed waiting period. It no longer accepts uploads.
+A job that ended because no complete source video was uploaded within the allowed waiting period; this does not imply deliberate user abandonment. It no longer accepts uploads.
 
 **Conversion**:
 The processing of a source video into an output video according to committed conversion options. Conversion is one stage of a job.

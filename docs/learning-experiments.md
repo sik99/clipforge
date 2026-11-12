@@ -36,6 +36,8 @@ Benchmark execution could use scenario scripts with an optional suite runner, or
 
 ## Failures and overload
 
+The owner wants to learn by observing, evaluating, and debugging backlog growth, supported by v1's confirmed [absence of an application-defined waiting-conversion count limit](project-brief.md#first-version-user-flow-and-scope). The observability feature, including backlog metrics and dashboards, is deferred beyond v1. This learning objective does not establish a v1 instrumentation requirement, benchmark script, arrival profile, telemetry stack, metric set, or alert policy. Resolve those details during later observability and experiment design.
+
 Possible experiments as the relevant components become available:
 
 | Question | Candidate experiment and observations |
